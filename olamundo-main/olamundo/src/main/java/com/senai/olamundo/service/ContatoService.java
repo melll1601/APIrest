@@ -32,6 +32,6 @@ public class ContatoService {
 
     public void atualizarContato(int id, Contato contato) throws SQLException{
         contato.setId(id);
-        contatoRepository.atualizarContato(contato);
+        contatoRepository.atualizarContato(id, contato);
     }
 }

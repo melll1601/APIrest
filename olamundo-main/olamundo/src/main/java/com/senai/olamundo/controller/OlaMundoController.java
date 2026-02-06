@@ -52,7 +52,7 @@ public class OlaMundoController {
     ) throws SQLException {
 
         contato.setId(id);
-        contatoService.atualizarContato(contato);
+        contatoService.atualizarContato(id, contato);
 
         return "Usuário atualizado com sucesso";
     }

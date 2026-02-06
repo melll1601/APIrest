@@ -82,10 +82,10 @@ public class ContatoRepository {
         }
     }
 
-    public void atualizarContato(Contato contato) throws SQLException{
+    public void atualizarContato(int id, Contato contato) throws SQLException{
 
         String query = """
-                UPDATE contato SET nome = ?, numero = ²
+                UPDATE contato SET nome = ?, numero = ?
                 WHERE id = ?
                 """;
 
@@ -94,7 +94,7 @@ public class ContatoRepository {
 
             stmt.setString(1, contato.getNome());
             stmt.setString(2, contato.getNumero());
-            stmt.setInt(3, contato.getId());
+            stmt.setInt(3, id);
 
             int linhasAfetadas = stmt.executeUpdate();
 
