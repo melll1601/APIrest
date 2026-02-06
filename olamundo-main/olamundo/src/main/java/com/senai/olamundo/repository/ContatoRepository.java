@@ -60,4 +60,25 @@ public class ContatoRepository {
             error.printStackTrace();
         }
     }
+
+    public void deletarUser(int id) throws SQLException{
+
+        String query = """
+                DELETE FROM contato
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if (linhasAfetadas == 0){
+                System.out.println("Nenhum contato encontrado");
+                throw new RuntimeException();
+            }
+        }
+    }
 }

@@ -38,4 +38,10 @@ public class OlaMundoController {
         contatoService.cadastrarContato(contato);
         return "Usuário salvo com sucesso!";
     }
+
+    @DeleteMapping("/{id}")
+    public String deletarContato(@PathVariable int id) throws SQLException{
+        contatoService.excluirContato(id);
+        return "Contato Deletado";
+    }
 }

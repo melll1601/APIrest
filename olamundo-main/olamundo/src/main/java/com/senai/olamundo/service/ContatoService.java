@@ -24,4 +24,9 @@ public class ContatoService {
         contatoRepository.cadastrarContato(contato);
         return contato;
     }
+
+    public int excluirContato(int id) throws SQLException {
+        contatoRepository.deletarUser(id);
+        return id;
+    }
 }
