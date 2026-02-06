@@ -44,4 +44,16 @@ public class OlaMundoController {
         contatoService.excluirContato(id);
         return "Contato Deletado";
     }
+
+    @PutMapping("/{id}")
+    public String atualizarContato(
+            @PathVariable int id,
+            @RequestBody Contato contato
+    ) throws SQLException {
+
+        contato.setId(id);
+        contatoService.atualizarContato(contato);
+
+        return "Usuário atualizado com sucesso";
+    }
 }

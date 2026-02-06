@@ -81,4 +81,26 @@ public class ContatoRepository {
             }
         }
     }
+
+    public void atualizarContato(Contato contato) throws SQLException{
+
+        String query = """
+                UPDATE contato SET nome = ?, numero = ²
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setString(1, contato.getNome());
+            stmt.setString(2, contato.getNumero());
+            stmt.setInt(3, contato.getId());
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if (linhasAfetadas == 0){
+                System.out.println("Nenhum usuário Encontrado");
+            }
+        }
+    }
 }

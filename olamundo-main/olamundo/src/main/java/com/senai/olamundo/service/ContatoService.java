@@ -29,4 +29,9 @@ public class ContatoService {
         contatoRepository.deletarUser(id);
         return id;
     }
+
+    public void atualizarContato(int id, Contato contato) throws SQLException{
+        contato.setId(id);
+        contatoRepository.atualizarContato(contato);
+    }
 }
