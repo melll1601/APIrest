@@ -34,4 +34,8 @@ public class ContatoService {
         contato.setId(id);
         contatoRepository.atualizarContato(id, contato);
     }
+
+    public Contato buscarPorId(int id) throws SQLException {
+        return contatoRepository.buscarId(id);
+    }
 }

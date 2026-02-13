@@ -4,10 +4,7 @@ import com.senai.olamundo.model.Contato;
 import com.senai.olamundo.utils.Conexao;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +36,7 @@ public class ContatoRepository {
         return contatos;
     }
 
-    public void cadastrarContato(Contato contato) throws SQLException {
+    public Contato cadastrarContato(Contato contato) throws SQLException {
 
         String query = """
                 INSERT INTO contato
@@ -48,16 +45,22 @@ public class ContatoRepository {
                 (?, ?)
                 """;
 
-        try(Connection conn = Conexao.conectar();
-        PreparedStatement stmt = conn.prepareStatement(query)){
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
 
             stmt.setString(1, contato.getNome());
             stmt.setString(2, contato.getNumero());
             stmt.executeUpdate();
 
-        }catch (SQLException error){
-            error.printStackTrace();
+            ResultSet rs = stmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                contato.setId(rs.getInt(1));
+                return contato;
+            }
+
+            return null;
         }
     }
 
@@ -103,4 +106,26 @@ public class ContatoRepository {
             }
         }
     }
+
+    public Contato buscarId(int id) throws SQLException {
+        String query = "SELECT * FROM contato WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Contato(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("numero")
+                );
+            }
+        }
+
+        return null;
+    }
 }
+

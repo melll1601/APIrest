@@ -32,11 +32,17 @@ public class OlaMundoController {
     }
 
     @PostMapping
-    public String postContato(
+    public Contato postContato(
         @RequestBody Contato contato
     ) throws SQLException {
-        contatoService.cadastrarContato(contato);
-        return "Usuário salvo com sucesso!";
+
+        try {
+            contato = contatoService.cadastrarContato(contato);
+        }catch (SQLException erro){
+            erro.printStackTrace();
+        }
+
+        return contato;
     }
 
     @DeleteMapping("/{id}")
@@ -46,14 +52,29 @@ public class OlaMundoController {
     }
 
     @PutMapping("/{id}")
-    public String atualizarContato(
+    public Contato atualizarContato(
             @PathVariable int id,
             @RequestBody Contato contato
-    ) throws SQLException {
+    ) {
+        SQLException exception = new SQLException();
 
-        contato.setId(id);
-        contatoService.atualizarContato(id, contato);
+        try {
+            contato.setId(id);
+            contatoService.atualizarContato(id, contato);
 
-        return "Usuário atualizado com sucesso";
+            return contato;
+
+        }catch (SQLException error){
+            throw new RuntimeException(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public Contato buscarUsuarioPorId(@PathVariable int id) {
+        try {
+            return contatoService.buscarPorId(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
